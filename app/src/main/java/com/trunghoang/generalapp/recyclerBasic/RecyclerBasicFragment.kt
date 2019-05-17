@@ -3,6 +3,7 @@ package com.trunghoang.generalapp.recyclerBasic
 
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -32,6 +33,9 @@ class RecyclerBasicFragment : Fragment() {
         val adapter = MoviesRecyclerAdapter(repo.getAFewMovies())
         recyclerBasic.adapter = adapter
         recyclerBasic.layoutManager = LinearLayoutManager(context)
+        recyclerBasic.setRecyclerListener {
+            Log.d("RecyclerView", "Put $it")
+        }
         buttonRemove.setOnClickListener {
             adapter.removeItem()
         }

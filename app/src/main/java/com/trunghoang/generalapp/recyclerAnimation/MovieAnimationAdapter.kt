@@ -51,7 +51,7 @@ class MovieAnimationAdapter(
 
     fun updateLike(position: Int) {
         val currentLikeStatus = dataSet[position].isLiked
-        dataSet[position].isLiked = !currentLikeStatus!!
+        dataSet[position].isLiked = !currentLikeStatus
         notifyItemChanged(position, ACTION_LIKE_IMAGE)
     }
 

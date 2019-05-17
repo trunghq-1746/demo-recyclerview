@@ -44,7 +44,7 @@ class RecyclerAnimationFragment : Fragment() {
                     position?.let { adapter.updateLike(position) }
                     return true
                 }
-                return true
+                return false
             }
         })
         val linearLayout = object : LinearLayoutManager(context) {

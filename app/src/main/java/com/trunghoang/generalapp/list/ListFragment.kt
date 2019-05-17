@@ -2,6 +2,7 @@ package com.trunghoang.generalapp.list
 
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -25,6 +26,9 @@ class ListFragment : Fragment() {
         val data = repo.getAFewMovies()
         val adapter = context?.let { ListArrayAdapter(it, data) }
         listView.adapter = adapter
+        listView.setRecyclerListener {
+            Log.d("ListView", "Put $it")
+        }
         /*listView.setOnScrollListener(object : AbsListView.OnScrollListener {
             override fun onScroll(
                 view: AbsListView?,

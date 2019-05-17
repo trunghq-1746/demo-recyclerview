@@ -23,12 +23,12 @@ class ListArrayAdapter(
         val holder: ListViewHolder
         if (v == null) {
             countViews ++
-            Log.d("Count Views", countViews.toString())
+            Log.d("ListView", "New $countViews")
             v = LayoutInflater.from(context).inflate(R.layout.item5_constraint, parent, false)
             holder = ListViewHolder(v)
             v.tag = holder
         } else {
-            Log.d("Count Views", "recycle")
+            Log.d("ListView", "Use $v")
             holder = v.tag as ListViewHolder
         }
         holder.bind(movie!!)

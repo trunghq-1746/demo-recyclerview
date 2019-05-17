@@ -17,7 +17,7 @@ class MoviesRecyclerAdapter(
         val v = LayoutInflater.from(parent.context)
             .inflate(R.layout.item5_constraint, parent, false)
         countViewHolder ++
-        Log.d("Count ViewHolders", countViewHolder.toString())
+        Log.d("RecyclerView", "New $countViewHolder")
         return MovieViewHolder(v)
     }
 
@@ -26,6 +26,7 @@ class MoviesRecyclerAdapter(
     }
 
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
+        Log.d("RecyclerView", "Use $holder")
         holder.bind(dataSet[position])
     }
 

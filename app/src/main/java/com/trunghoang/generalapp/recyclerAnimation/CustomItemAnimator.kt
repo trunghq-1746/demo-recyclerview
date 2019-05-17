@@ -118,14 +118,17 @@ class CustomItemAnimator : SimpleItemAnimator() {
         val movesPending = pendingMoves.isNotEmpty()
         val changesPending = pendingChanges.isNotEmpty()
         val additionsPending = pendingAdditions.isNotEmpty()
+
         if (!removalsPending && !movesPending && !additionsPending && !changesPending) {
             // nothing to animate
             return
         }
+
         for (holder in pendingRemovals) {
             animateRemoveImpl(holder)
         }
         pendingRemovals.clear()
+
         if (movesPending) {
             val moves = ArrayList<MoveInfo>()
             moves.addAll(pendingMoves)
@@ -355,65 +358,6 @@ class CustomItemAnimator : SimpleItemAnimator() {
             dispatchAnimationsFinished()
         }
     }
-
-    /*override fun recordPreLayoutInformation(
-        state: RecyclerView.State,
-        viewHolder: RecyclerView.ViewHolder,
-        changeFlags: Int,
-        payloads: MutableList<Any>
-    ): ItemHolderInfo {
-        if (changeFlags == RecyclerView.ItemAnimator.FLAG_CHANGED) {
-            for (payload in payloads) {
-                if (payload is String) {
-                    return MovieItemHolderInfo(payload)
-                }
-            }
-        }
-        return super.recordPreLayoutInformation(state, viewHolder, changeFlags, payloads)
-    }
-
-    override fun animateAdd(holder: RecyclerView.ViewHolder?): Boolean {
-        AnimatorInflater.loadAnimator(holder?.itemView?.context, R.animator.add_animator).apply {
-            setTarget(holder?.itemView)
-            addListener( object : AnimatorListenerAdapter() {
-                override fun onAnimationEnd(animation: Animator?) {
-                    holder?.let { dispatchAnimationFinished(it) }
-                }
-            })
-            start()
-        }
-        return true
-    }
-
-    override fun animateRemove(holder: RecyclerView.ViewHolder?): Boolean {
-        AnimatorInflater.loadAnimator(holder?.itemView?.context, R.animator.remove_animator).apply {
-            setTarget(holder?.itemView)
-            addListener( object : AnimatorListenerAdapter() {
-                override fun onAnimationEnd(animation: Animator?) {
-                    holder?.let {
-                        dispatchAnimationFinished(it)
-                    }
-                }
-            })
-            start()
-        }
-        return false
-    }
-
-    override fun animateChange(
-        oldHolder: RecyclerView.ViewHolder,
-        newHolder: RecyclerView.ViewHolder,
-        preInfo: ItemHolderInfo,
-        postInfo: ItemHolderInfo
-    ): Boolean {
-        if (preInfo is MovieItemHolderInfo) {
-            when (preInfo.updateAction) {
-                MovieAnimationAdapter.ACTION_LIKE_IMAGE -> (newHolder as MovieAnimationAdapter.MovieViewHolder).animateLike(this)
-            }
-            return false
-        }
-        return super.animateChange(oldHolder, newHolder, preInfo, postInfo)
-    }*/
 
     companion object {
         class MovieItemHolderInfo(val updateAction: String): ItemHolderInfo()
