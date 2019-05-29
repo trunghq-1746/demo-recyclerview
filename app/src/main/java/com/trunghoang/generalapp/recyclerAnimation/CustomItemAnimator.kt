@@ -23,7 +23,7 @@ class CustomItemAnimator : SimpleItemAnimator() {
     private val moveList: ArrayList<ArrayList<MoveInfo>> = ArrayList()
 
     override fun canReuseUpdatedViewHolder(viewHolder: RecyclerView.ViewHolder): Boolean {
-        return true
+        return false
     }
 
     override fun recordPreLayoutInformation(
@@ -57,7 +57,7 @@ class CustomItemAnimator : SimpleItemAnimator() {
         return true
     }
 
-    override fun animateChange(
+    /*override fun animateChange(
         oldHolder: RecyclerView.ViewHolder,
         newHolder: RecyclerView.ViewHolder,
         preInfo: ItemHolderInfo,
@@ -70,7 +70,7 @@ class CustomItemAnimator : SimpleItemAnimator() {
             return true
         }
         return super.animateChange(oldHolder, newHolder, preInfo, postInfo)
-    }
+    }*/
 
     override fun animateChange(
         oldHolder: RecyclerView.ViewHolder?,
@@ -285,7 +285,7 @@ class CustomItemAnimator : SimpleItemAnimator() {
         val v = holder.itemView
         AnimatorInflater.loadAnimator(v.context, R.animator.add_animator).apply {
             setTarget(v)
-            addListener( object : AnimatorListenerAdapter() {
+            addListener(object : AnimatorListenerAdapter() {
                 override fun onAnimationCancel(animation: Animator?) {
                     v.alpha = 1F
                 }
@@ -307,7 +307,7 @@ class CustomItemAnimator : SimpleItemAnimator() {
         val v = holder.itemView
         AnimatorInflater.loadAnimator(v.context, R.animator.remove_animator).apply {
             setTarget(v)
-            addListener( object : AnimatorListenerAdapter() {
+            addListener(object : AnimatorListenerAdapter() {
                 override fun onAnimationEnd(animation: Animator?) {
                     animation?.removeListener(this)
                     v.scaleX = 1.0F
@@ -322,7 +322,71 @@ class CustomItemAnimator : SimpleItemAnimator() {
     }
 
     private fun animateChangeImpl(changeInfo: ChangeInfo) {
+        val oldHolder = changeInfo.oldHolder
+        val oldView = oldHolder?.itemView
+        val newHolder = changeInfo.newHolder
+        val newView = newHolder?.itemView
+        newView?.run {
+            translationX += 1800F
+            translationY -= 1800F
+            alpha = 0F
+            scaleX = 9F
+            scaleY = 9F
+        }
+        if (oldView != null) {
+            changeAnimations.add(changeInfo.oldHolder)
+            val oldViewAnim = oldView.animate()
+            oldViewAnim.setDuration(changeDuration * 5)
+                .translationXBy(1800F)
+                .translationYBy(-1800F)
+                .scaleX(9F)
+                .scaleY(9F)
+                .alpha(0f)
+                .setListener(object : AnimatorListenerAdapter() {
+                    override fun onAnimationStart(animator: Animator) {
+                        dispatchChangeStarting(changeInfo.oldHolder, true)
+                    }
 
+                    override fun onAnimationEnd(animator: Animator) {
+                        if (newView != null) {
+                            changeAnimations.add(changeInfo.newHolder)
+                            val newViewAnim = newView.animate()
+                            newViewAnim.setDuration(changeDuration * 5)
+                                .translationXBy(-1800F)
+                                .translationYBy(1800F)
+                                .scaleX(1F)
+                                .scaleY(1F)
+                                .alpha(1f)
+                                .setListener(object : AnimatorListenerAdapter() {
+                                    override fun onAnimationStart(animator: Animator) {
+                                        dispatchChangeStarting(changeInfo.newHolder, false)
+                                    }
+
+                                    override fun onAnimationEnd(animator: Animator) {
+                                        newViewAnim.setListener(null)
+                                        newView.alpha = 1f
+                                        newView.translationX = 0f
+                                        newView.translationY = 0f
+                                        newView.scaleX = 1F
+                                        newView.scaleY = 1F
+                                        dispatchChangeFinished(changeInfo.newHolder, false)
+                                        changeAnimations.remove(changeInfo.newHolder)
+                                        dispatchFinishedWhenDone()
+                                    }
+                                }).start()
+                        }
+                        oldViewAnim.setListener(null)
+                        oldView.alpha = 1f
+                        oldView.translationX = 0f
+                        oldView.translationY = 0f
+                        oldView.scaleX = 1F
+                        oldView.scaleY = 1F
+                        dispatchChangeFinished(changeInfo.oldHolder, true)
+                        changeAnimations.remove(changeInfo.oldHolder)
+                        dispatchFinishedWhenDone()
+                    }
+                }).start()
+        }
     }
 
     private fun animateMoveImpl(moveInfo: MoveInfo) {
@@ -360,19 +424,22 @@ class CustomItemAnimator : SimpleItemAnimator() {
     }
 
     companion object {
-        class MovieItemHolderInfo(val updateAction: String): ItemHolderInfo()
+        class MovieItemHolderInfo(val updateAction: String) : ItemHolderInfo()
         class ChangeInfo(
             val oldHolder: RecyclerView.ViewHolder?,
             val newHolder: RecyclerView.ViewHolder?,
             val fromLeft: Int,
             val fromTop: Int,
             val toLeft: Int,
-            val toTop: Int)
+            val toTop: Int
+        )
+
         class MoveInfo(
             val holder: RecyclerView.ViewHolder?,
             val fromX: Int,
             val fromY: Int,
             val toX: Int,
-            val toY: Int)
+            val toY: Int
+        )
     }
 }

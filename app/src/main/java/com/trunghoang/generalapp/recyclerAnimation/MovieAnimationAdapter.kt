@@ -11,6 +11,7 @@ import com.bumptech.glide.Glide
 import com.trunghoang.generalapp.R
 import com.trunghoang.generalapp.model.Movie
 import kotlinx.android.synthetic.main.item_movie.view.*
+import kotlin.math.roundToInt
 
 class MovieAnimationAdapter(
     private val dataSet: List<Movie>
@@ -49,10 +50,9 @@ class MovieAnimationAdapter(
         notifyItemRemoved(position)
     }
 
-    fun updateLike(position: Int) {
-        val currentLikeStatus = dataSet[position].isLiked
-        dataSet[position].isLiked = !currentLikeStatus
-        notifyItemChanged(position, ACTION_LIKE_IMAGE)
+    fun updateImage(position: Int) {
+        dataSet[position].imageUrl = "https://picsum.photos/id/${(Math.random() * 1000).roundToInt()}/200"
+        notifyItemChanged(position)
     }
 
     inner class MovieViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
@@ -66,6 +66,7 @@ class MovieAnimationAdapter(
             textTitle.text = movie.title
             Glide.with(itemView.context)
                 .load(movie.imageUrl)
+                .placeholder(R.drawable.ic_launcher_background)
                 .into(imageView)
             imageFavorite.setImageDrawable(
                 when (movie.isLiked) {
@@ -75,14 +76,14 @@ class MovieAnimationAdapter(
             )
         }
 
-        fun animateLike(itemAnimator: RecyclerView.ItemAnimator) {
+        fun animateLike(itemAnimator: RecyclerView.ItemAnimator?) {
             AnimatorInflater.loadAnimator(itemView.context, R.animator.like_animator).apply {
                 setTarget(itemView.imageFavoriteAnimation)
-                addListener( object : AnimatorListenerAdapter() {
+                /*addListener( object : AnimatorListenerAdapter() {
                     override fun onAnimationEnd(animation: Animator?) {
                         itemAnimator.dispatchAnimationFinished(this@MovieViewHolder)
                     }
-                })
+                })*/
                 start()
             }
         }

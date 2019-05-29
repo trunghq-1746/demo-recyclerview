@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.trunghoang.generalapp.MovieRepository
 
 import com.trunghoang.generalapp.R
-import com.trunghoang.generalapp.model.Movie
 import kotlinx.android.synthetic.main.fragment_recycler_animation.*
 
 class RecyclerAnimationFragment : Fragment() {
@@ -41,7 +40,10 @@ class RecyclerAnimationFragment : Fragment() {
                 e?.let {
                     val child = recyclerAnimation.findChildViewUnder(e.x, e.y)
                     val position = child?.let { recyclerAnimation.getChildAdapterPosition(it) }
-                    position?.let { adapter.updateLike(position) }
+                    position?.let {
+                        adapter.updateImage(position)
+                        //(recyclerAnimation.findViewHolderForAdapterPosition(position) as MovieAnimationAdapter.MovieViewHolder).animateLike(null)
+                    }
                     return true
                 }
                 return false
