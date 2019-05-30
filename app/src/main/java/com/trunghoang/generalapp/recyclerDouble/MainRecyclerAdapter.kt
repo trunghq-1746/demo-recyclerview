@@ -1,10 +1,12 @@
-package com.trunghoang.generalapp
+package com.trunghoang.generalapp.recyclerDouble
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.trunghoang.generalapp.MoviesRecyclerAdapter
+import com.trunghoang.generalapp.R
 import com.trunghoang.generalapp.model.Movie
 import kotlinx.android.synthetic.main.item_new_movies.view.*
 import kotlinx.android.synthetic.main.item_title.view.*

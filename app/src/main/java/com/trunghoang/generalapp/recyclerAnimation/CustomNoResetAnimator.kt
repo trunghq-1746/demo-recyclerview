@@ -1,5 +1,9 @@
 package com.trunghoang.generalapp.recyclerAnimation
 
+/**
+ * Created by Hoang Trung on 30/05/2019
+ */
+
 import android.animation.Animator
 import android.animation.AnimatorInflater
 import android.animation.AnimatorListenerAdapter
@@ -9,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.trunghoang.generalapp.R
 
-class CustomItemAnimator : SimpleItemAnimator() {
+class CustomNoResetAnimator : SimpleItemAnimator() {
     private val pendingAdditions: ArrayList<RecyclerView.ViewHolder> = ArrayList()
     private val pendingChanges: ArrayList<ChangeInfo> = ArrayList()
     private val pendingRemovals: ArrayList<RecyclerView.ViewHolder> = ArrayList()
@@ -321,6 +325,7 @@ class CustomItemAnimator : SimpleItemAnimator() {
                     override fun onAnimationEnd(animator: Animator) {
                         if (newView != null) {
                             changeAnimations.add(changeInfo.newHolder)
+
                             val newViewAnim = newView.animate()
                             newViewAnim.setDuration(changeDuration * 5)
                                 .translationXBy(-1800F)
@@ -335,23 +340,24 @@ class CustomItemAnimator : SimpleItemAnimator() {
 
                                     override fun onAnimationEnd(animator: Animator) {
                                         newViewAnim.setListener(null)
-                                        newView.alpha = 1f
+                                        /*newView.alpha = 1f
                                         newView.translationX = 0f
                                         newView.translationY = 0f
                                         newView.scaleX = 1F
-                                        newView.scaleY = 1F
+                                        newView.scaleY = 1F*/
                                         dispatchChangeFinished(changeInfo.newHolder, false)
                                         changeAnimations.remove(changeInfo.newHolder)
                                         dispatchFinishedWhenDone()
                                     }
                                 }).start()
                         }
+
                         oldViewAnim.setListener(null)
-                        oldView.alpha = 1f
+                        /*oldView.alpha = 1f
                         oldView.translationX = 0f
                         oldView.translationY = 0f
                         oldView.scaleX = 1F
-                        oldView.scaleY = 1F
+                        oldView.scaleY = 1F*/
                         dispatchChangeFinished(changeInfo.oldHolder, true)
                         changeAnimations.remove(changeInfo.oldHolder)
                         dispatchFinishedWhenDone()

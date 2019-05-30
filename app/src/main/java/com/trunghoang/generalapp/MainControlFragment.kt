@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import com.trunghoang.generalapp.list.ListFragment
 import com.trunghoang.generalapp.recyclerAnimation.RecyclerAnimationFragment
 import com.trunghoang.generalapp.recyclerBasic.RecyclerBasicFragment
+import com.trunghoang.generalapp.recyclerDouble.DoubleRecyclerFragment
 import kotlinx.android.synthetic.main.fragment_main_control.*
 
 class MainControlFragment : Fragment(), View.OnClickListener {

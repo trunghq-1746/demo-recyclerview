@@ -1,4 +1,4 @@
-package com.trunghoang.generalapp
+package com.trunghoang.generalapp.recyclerDouble
 
 class RecyclerViewType {
     private val viewTypes: ArrayList<Pair<Int, ViewTypePosition>> = ArrayList()

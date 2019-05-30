@@ -15,7 +15,7 @@ class MoviesRecyclerAdapter(
     private var countViewHolder = 0
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
         val v = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item5_constraint, parent, false)
+            .inflate(R.layout.item_movie, parent, false)
         countViewHolder ++
         Log.d("RecyclerView", "New $countViewHolder")
         return MovieViewHolder(v)
@@ -46,6 +46,11 @@ class MoviesRecyclerAdapter(
         notifyItemRemoved(1)
     }
 
+    fun changeItem() {
+        dataSet[1].title = "Haha"
+        notifyItemChanged(10)
+    }
+
     inner class MovieViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
         private val textTitle = itemView.textTitle
         private val imageView = itemView.imageView
@@ -54,6 +59,7 @@ class MoviesRecyclerAdapter(
             textTitle.text = movie.title
             Glide.with(itemView.context)
                 .load(movie.imageUrl)
+                .placeholder(R.drawable.ic_launcher_background)
                 .into(imageView)
         }
     }

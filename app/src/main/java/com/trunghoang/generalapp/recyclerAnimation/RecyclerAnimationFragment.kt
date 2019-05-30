@@ -48,6 +48,16 @@ class RecyclerAnimationFragment : Fragment() {
                 }
                 return false
             }
+
+            override fun onLongPress(e: MotionEvent?) {
+                e?.let {
+                    val child = recyclerAnimation.findChildViewUnder(e.x, e.y)
+                    val position = child?.let { recyclerAnimation.getChildAdapterPosition(it) }
+                    position?.let {
+                        adapter.swapItem(it)
+                    }
+                }
+            }
         })
         val linearLayout = object : LinearLayoutManager(context) {
             override fun supportsPredictiveItemAnimations(): Boolean {
@@ -63,6 +73,18 @@ class RecyclerAnimationFragment : Fragment() {
             when (checkedId) {
                 R.id.radioLinear -> recyclerAnimation.layoutManager = linearLayout
                 R.id.radioGrid -> recyclerAnimation.layoutManager = gridLayout
+            }
+        }
+        checkNoResetView.setOnCheckedChangeListener { buttonView, isChecked ->
+            when (isChecked) {
+                true -> recyclerAnimation.itemAnimator = CustomNoResetAnimator()
+                false -> recyclerAnimation.itemAnimator = CustomItemAnimator()
+            }
+        }
+        checkNoPending.setOnCheckedChangeListener { buttonView, isChecked ->
+            when (isChecked) {
+                true -> recyclerAnimation.itemAnimator = CustomNoPendingAnimator()
+                false -> recyclerAnimation.itemAnimator = CustomItemAnimator()
             }
         }
         radioLayout.check(R.id.radioGrid)

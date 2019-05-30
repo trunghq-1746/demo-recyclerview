@@ -31,13 +31,21 @@ class RecyclerBasicFragment : Fragment() {
     @RequiresApi(Build.VERSION_CODES.JELLY_BEAN)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val adapter = MoviesRecyclerAdapter(repo.getAFewMovies())
+        val linearLayout = object : LinearLayoutManager(context) {
+            override fun supportsPredictiveItemAnimations(): Boolean {
+                return false
+            }
+        }
         recyclerBasic.adapter = adapter
-        recyclerBasic.layoutManager = LinearLayoutManager(context)
+        recyclerBasic.layoutManager = linearLayout
         recyclerBasic.setRecyclerListener {
             Log.d("RecyclerView", "Put $it")
         }
         buttonRemove.setOnClickListener {
             adapter.removeItem()
+        }
+        buttonChange.setOnClickListener {
+            adapter.changeItem()
         }
     }
 

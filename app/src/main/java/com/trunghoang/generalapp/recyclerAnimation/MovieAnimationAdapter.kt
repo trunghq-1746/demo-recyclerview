@@ -55,6 +55,13 @@ class MovieAnimationAdapter(
         notifyItemChanged(position)
     }
 
+    fun swapItem(position: Int) {
+        val newData = dataSet[position + 1]
+        (dataSet as ArrayList)[position + 1] = dataSet[position]
+        dataSet[position] = newData
+        notifyItemMoved(position, position + 1)
+    }
+
     inner class MovieViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
         private val textTitle = itemView.textTitle
         private val imageView = itemView.imageView

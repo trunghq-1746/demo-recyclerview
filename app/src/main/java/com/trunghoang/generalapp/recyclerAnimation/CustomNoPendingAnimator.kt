@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.trunghoang.generalapp.R
 
-class CustomItemAnimator : SimpleItemAnimator() {
+class CustomNoPendingAnimator : SimpleItemAnimator() {
     private val pendingAdditions: ArrayList<RecyclerView.ViewHolder> = ArrayList()
     private val pendingChanges: ArrayList<ChangeInfo> = ArrayList()
     private val pendingRemovals: ArrayList<RecyclerView.ViewHolder> = ArrayList()
@@ -29,16 +29,16 @@ class CustomItemAnimator : SimpleItemAnimator() {
     override fun animateAdd(holder: RecyclerView.ViewHolder?): Boolean {
         holder?.let {
             holder.itemView.alpha = 0F
-            pendingAdditions.add(it)
+            animateAddImpl(holder)
         }
-        return true
+        return false
     }
 
     override fun animateRemove(holder: RecyclerView.ViewHolder?): Boolean {
         holder?.let {
-            pendingRemovals.add(it)
+            animateRemoveImpl(holder)
         }
-        return true
+        return false
     }
 
     override fun animateChange(

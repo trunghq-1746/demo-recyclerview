@@ -1,4 +1,4 @@
-package com.trunghoang.generalapp
+package com.trunghoang.generalapp.recyclerDouble
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,6 +8,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.trunghoang.generalapp.MovieRepository
+import com.trunghoang.generalapp.R
 import kotlinx.android.synthetic.main.fragment_double_recycler.*
 
 class DoubleRecyclerFragment : Fragment() {
@@ -48,7 +50,7 @@ class DoubleRecyclerFragment : Fragment() {
                 addViewType(R.layout.item_new_movies, ViewTypePosition(17, 17))
             }
         )
-        recyclerMain.addOnItemTouchListener(object : RecyclerView.OnItemTouchListener {
+        val listener = object : RecyclerView.OnItemTouchListener {
             override fun onTouchEvent(rv: RecyclerView, e: MotionEvent) {
             }
 
@@ -62,7 +64,14 @@ class DoubleRecyclerFragment : Fragment() {
 
             override fun onRequestDisallowInterceptTouchEvent(disallowIntercept: Boolean) {
             }
-        })
+        }
+        checkBox.setOnCheckedChangeListener { buttonView, isChecked ->
+            when (isChecked) {
+                true -> recyclerMain.removeOnItemTouchListener(listener)
+                false -> recyclerMain.addOnItemTouchListener(listener)
+            }
+        }
+        recyclerMain.addOnItemTouchListener(listener)
     }
 
     companion object {

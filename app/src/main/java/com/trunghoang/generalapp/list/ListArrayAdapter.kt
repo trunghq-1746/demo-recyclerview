@@ -20,18 +20,17 @@ class ListArrayAdapter(
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val movie = getItem(position)
         var v = convertView
-        val holder: ListViewHolder
         if (v == null) {
             countViews ++
             Log.d("ListView", "New $countViews")
             v = LayoutInflater.from(context).inflate(R.layout.item5_constraint, parent, false)
-            holder = ListViewHolder(v)
-            v.tag = holder
-        } else {
-            Log.d("ListView", "Use $v")
-            holder = v.tag as ListViewHolder
         }
-        holder.bind(movie!!)
+        movie?.let {
+            v!!.textTitle.text = movie.title
+            Glide.with(v.context)
+                .load(movie.imageUrl)
+                .into(v.imageView)
+        }
         return v!!
     }
 
